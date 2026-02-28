@@ -66,23 +66,11 @@ jobs:
           path: theos
           submodules: recursive
       
-      - name: Caching
-        id: SDK
-        uses: actions/cache@v4.2.3
-        env:
-          cache-name: iOS-16.5-SDK
-        with:
-          path: theos/sdks/
-          key: ${{ env.cache-name }}
-
-      - name: Download iOS 16.5 SDK
-        if: steps.SDK.outputs.cache-hit != 'true'
+      - name: Setup iOS SDK
         run: |
-          git clone -n --depth=1 --filter=tree:0 https://github.com/theos/sdks sdks_repo
-          cd sdks_repo
-          git sparse-checkout set --no-cone iPhoneOS16.5.sdk
-          git checkout
-          mv iPhoneOS16.5.sdk $THEOS/sdks/
+          sdk_path=$(xcrun --sdk iphoneos --show-sdk-path)
+          mkdir -p $THEOS/sdks
+          ln -s "$sdk_path" "$THEOS/sdks/iPhoneOS17.5.sdk"
         env:
           THEOS: ${{ github.workspace }}/theos
 
