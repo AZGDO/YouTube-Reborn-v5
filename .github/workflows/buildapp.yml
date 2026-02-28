@@ -78,10 +78,14 @@ jobs:
       - name: Download iOS 17.5 SDK
         if: steps.SDK.outputs.cache-hit != 'true'
         run: |
-          git clone -n --depth=1 --filter=tree:0 https://github.com && cd sdks
+          # Клонируем репозиторий в папку 'sdks_repo'
+          git clone -n --depth=1 --filter=tree:0 https://github.com sdks_repo
+          cd sdks_repo
+          # Настраиваем выборочное скачивание только нужной папки
           git sparse-checkout set --no-cone iPhoneOS17.5.sdk
           git checkout
-          mv *.sdk $THEOS/sdks
+          # Переносим SDK в структуру Theos
+          mv iPhoneOS17.5.sdk $THEOS/sdks/
         env:
           THEOS: ${{ github.workspace }}/theos
 
