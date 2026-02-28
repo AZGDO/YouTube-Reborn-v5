@@ -79,7 +79,7 @@ jobs:
         if: steps.SDK.outputs.cache-hit != 'true'
         run: |
           # Клонируем репозиторий в папку 'sdks_repo'
-          git clone -n --depth=1 --filter=tree:0 https://github.com sdks_repo
+          git clone -n --depth=1 --filter=tree:0 https://github.com/theos/sdks sdks_repo
           cd sdks_repo
           # Настраиваем выборочное скачивание только нужной папки
           git sparse-checkout set --no-cone iPhoneOS17.5.sdk
